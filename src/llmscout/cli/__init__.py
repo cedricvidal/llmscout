@@ -20,10 +20,6 @@ def cli():
 @click.option('--set-azd-env/--no-set-azd-env', default=True, help='Set the selected deployment names as azd environment variables.')
 def scan(scan_azure, set_azd_env):
 
-    load_azd_env()
-    load_dotenv(".env")
-    load_dotenv(".env.state")
-
     if scan_azure:
         litellm_config = do_scan_azure()
 
@@ -32,4 +28,8 @@ def scan(scan_azure, set_azd_env):
             yaml.dump(litellm_config, f)
 
     if set_azd_env:
+        load_azd_env()
+        load_dotenv(".env")
+        load_dotenv(".env.state")
+
         export_proxy_endpoints()
