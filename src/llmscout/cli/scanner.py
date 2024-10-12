@@ -9,13 +9,13 @@ import click
 def list_resource(resource_type):
     result = subprocess.run(['az', 'resource', 'list', '--out', 'json', '--resource-type', resource_type], capture_output=True, text=True)
     if result.returncode:
-        raise Exception("Failed to run command: " + result.stdout)
+        raise Exception("Failed to run command: " + result.stderr)
     return json.loads(result.stdout)
 
 def rest_call(method, url, version):
     result = subprocess.run(['az', 'rest', '--method', method, '--url', f"{url}?api-version={version}"], capture_output=True, text=True)
     if result.returncode:
-        raise Exception("Failed to run command: " + result.stdout)
+        raise Exception("Failed to run command: " + result.stderr)
     return json.loads(result.stdout)
 
 def list_cognitive_services_accounts():
