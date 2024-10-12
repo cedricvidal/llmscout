@@ -4,10 +4,10 @@ from dotenv import load_dotenv
 from llmscout.__about__ import __version__
 from .scanner import do_scan_azure, export_proxy_endpoints
 from .azd_utils import load_azd_env
-from litellm import run_server
+from .litellm_patched import run_server as litellm_server
 
 def llmscout():
-    cli.add_command(run_server, "litellm")
+    cli.add_command(litellm_server, "litellm")
     cli()
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]}, invoke_without_command=True)

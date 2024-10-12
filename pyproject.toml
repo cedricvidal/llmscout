@@ -32,6 +32,7 @@ dependencies = [
   "azureml-core",
   "msrestazure",
   "azure-mgmt-resource",
+  "azure-identity==1.17.1",
   "pytest==8.1.2",
   "requests==2.32.3",
   "click==8.1.7",

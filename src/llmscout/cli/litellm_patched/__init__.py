@@ -49,6 +49,4 @@ client_initalization_utils.get_azure_ad_token_from_entrata_id = get_azure_ad_tok
 
 from litellm import run_server
 
-if __name__ == '__main__':
-    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    sys.exit(run_server())
+__all__ = ["run_server"]
