@@ -24,8 +24,21 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
+
 dependencies = [
-  "click",
+  "python-dotenv==1.0.1",
+  "PyYAML==6.0.1",
+  "coloredlogs==15.0.1",
+  "azureml-core",
+  "msrestazure",
+  "azure-mgmt-resource",
+  "pytest==8.1.2",
+  "requests==2.32.3",
+  "click==8.1.7",
+  "rich==13.8.1",
+  "rich-click==1.8.3",
+  "survey==5.4.0",
+  "litellm[proxy]==1.48.14",
 ]
 
 [project.urls]
