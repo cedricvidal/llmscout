@@ -74,7 +74,7 @@ def green(text):
 def do_scan_azure():
     click.echo(f"Scanning Azure for OpenAI endpoints")
     accounts = list_cognitive_services_accounts()
-    endpoints = {}
+    endpoints = []
     stats = {}
     signed_in_user_id = get_az_ad_signed_in_user()
     for account_digest in accounts:
@@ -100,47 +100,29 @@ def do_scan_azure():
                 sku_name = sku['name']
 
     #            if model_name in model_names:
-                if not model_id in endpoints.keys():
-                    endpoints[model_id] = []
+                if not model_id in stats.keys():
                     stats[model_id] = {
                         "total_capacity": 0,
                         "total_endpoints": 0
                     }
-                endpoints[model_id].append({
+                endpoints.append({
                     "deployment_name": deployment_name,
-                    "sku_capacity": sku_capacity,
-                    "sku_name": sku_name,
-                    "endpoint": oai_endpoint
+                    "endpoint": oai_endpoint,
+                    "sku": {
+                        "capacity": sku_capacity,
+                        "name": sku_name
+                    },
+                    "model": {
+                        "name": model_name,
+                        "version": model_version
+                    }
                 })
                 stats[model_id]['total_capacity'] += sku_capacity
                 stats[model_id]['total_endpoints'] += 1
                 click.echo(f" - Adding OpenAI endpoint: {bold(model_id)} ({sku_capacity} {sku_name})")
 
-
     click.echo("Total capacity by model:")
     for model_id, stat in stats.items():
         click.echo(f" - {model_id}: {stat['total_capacity']}")
 
-    model_list = []
-    litellm_config = {
-        "model_list": model_list,
-        "litellm_settings": {
-            "enable_azure_ad_token_refresh": "true"
-        }
-    }
-    for model_id, endpoint_list in endpoints.items():
-        for endpoint in endpoint_list:
-            deployment_name = endpoint['deployment_name']
-            api_base = endpoint['endpoint']
-            tpm = int(endpoint['sku_capacity']) * 1000
-            model_list.append({
-                "model_name": model_id,
-                "litellm_params": {
-                    "model": f"azure/{deployment_name}",
-                    "api_base": api_base,
-                    "tpm": tpm,
-                    "tenant_id": "HACK"
-                }
-            })
-
-    return litellm_config
+    return endpoints
