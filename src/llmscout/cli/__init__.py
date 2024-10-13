@@ -16,8 +16,9 @@ def cli():
 @cli.command()
 @click.option('--out', '-o', default="scan.yaml", type=click.Path())
 @click.option('--format', '-f', default="llmscout", type=str)
-def scan(out, format):
-    scanning = do_scan_azure()
+@click.option('--user-id', '-u', default=None, type=str)
+def scan(out, format, user_id):
+    scanning = do_scan_azure(user_id)
 
     click.echo(f"Writing scanning result to {out} in format {format}")
     if format == "litellm":

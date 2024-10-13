@@ -61,6 +61,7 @@ def has_role_assignment(user_id, scope, role):
     return len(assignments) > 0
 
 openai_user_role_id = '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd' # Cognitive Services OpenAI User
+openai_user_role_name = 'Cognitive Services OpenAI User'
 
 def bold(text):
     return click.style(text, bold=True)
@@ -71,17 +72,22 @@ def red(text):
 def green(text):
     return click.style(text, bold=True, fg='green')
 
-def do_scan_azure():
+def do_scan_azure(user_id = None):
     click.echo(f"Scanning Azure for OpenAI endpoints")
     accounts = list_cognitive_services_accounts()
     endpoints = []
     stats = {}
-    signed_in_user_id = get_az_ad_signed_in_user()
+
+    if not user_id:
+        user_id = get_az_ad_signed_in_user()
+
+    click.echo(f"Restricting to endpoints for which user '{user_id}' has role '{openai_user_role_name}'")
+
     for account_digest in accounts:
         account_id = account_digest['id']
         resource_group = account_digest['resourceGroup']
         account_name = account_digest['name']
-        granted = has_role_assignment(signed_in_user_id, account_id, openai_user_role_id)
+        granted = has_role_assignment(user_id, account_id, openai_user_role_id)
         click.echo(f"Found OpenAI resource: {bold(account_name)} in {bold(resource_group)} - {green("GRANTED") if granted else red("DENIED")}")
         if granted:
             account = get_cognitive_services_account(account_id)
