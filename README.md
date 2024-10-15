@@ -18,6 +18,12 @@ Not yet on [pypi.org](pypi.org) so for now, install directly from this Github re
 pip install git+https://github.com/cedricvidal/llmscout.git@main
 ```
 
+## Usage
+
+```
+llmscout --help
+```
+
 ## Development
 
 Executing with `hatch run`:
