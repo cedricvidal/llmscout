@@ -12,8 +12,10 @@
 
 ## Installation
 
+Not yet on [pypi.org](pypi.org) so for now, install directly from this Github repo:
+
 ```console
-pip install llmscout
+pip install git+https://github.com/cedricvidal/llmscout.git@main
 ```
 
 ## Development
