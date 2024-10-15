@@ -14,11 +14,12 @@ def cli():
     pass
 
 @cli.command()
-@click.option('--out', '-o', default="scan.yaml", type=click.Path())
-@click.option('--format', '-f', default="llmscout", type=str)
-@click.option('--user-id', '-u', default=None, type=str)
-def scan(out, format, user_id):
-    scanning = do_scan_azure(user_id)
+@click.option('--out', '-o', default="scan.yaml", type=click.Path(), help="Output file.")
+@click.option('--format', '-f', default="llmscout", type=str, help="Format of the output file.")
+@click.option('--user-id', '-u', default=None, type=str, help="Restricts to resources for which user id has OpenAI User role.")
+@click.option('--resource-group', '-g', default=None, type=str, help="Restricts to resources in resource group.")
+def scan(out, format, user_id, resource_group):
+    scanning = do_scan_azure(user_id, resource_group)
 
     click.echo(f"Writing scanning result to {out} in format {format}")
     if format == "litellm":

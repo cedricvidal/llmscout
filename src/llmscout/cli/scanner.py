@@ -3,8 +3,11 @@ from itertools import groupby
 import json
 import click
 
-def list_resource(resource_type):
-    result = subprocess.run(['az', 'resource', 'list', '--out', 'json', '--resource-type', resource_type], capture_output=True, text=True)
+def list_resource(resource_type, resource_group = None):
+    params = ['az', 'resource', 'list', '--out', 'json', '--resource-type', resource_type]
+    if resource_group:
+        params.extend(['--resource-group', resource_group])
+    result = subprocess.run(params, capture_output=True, text=True)
     if result.returncode:
         raise Exception("Failed to run command: " + result.stderr)
     return json.loads(result.stdout)
@@ -15,8 +18,8 @@ def rest_call(method, url, version):
         raise Exception("Failed to run command: " + result.stderr)
     return json.loads(result.stdout)
 
-def list_cognitive_services_accounts():
-    return list_resource("Microsoft.CognitiveServices/accounts")
+def list_cognitive_services_accounts(resource_group = None):
+    return list_resource("Microsoft.CognitiveServices/accounts", resource_group)
 
 def get_cognitive_services_account(resource_id):
     return rest_call("get", resource_id, "2023-05-01")
@@ -72,9 +75,9 @@ def red(text):
 def green(text):
     return click.style(text, bold=True, fg='green')
 
-def do_scan_azure(user_id = None):
+def do_scan_azure(user_id = None, resource_group = None):
     click.echo(f"Scanning Azure for OpenAI endpoints")
-    accounts = list_cognitive_services_accounts()
+    accounts = list_cognitive_services_accounts(resource_group)
     endpoints = []
     stats = {}
 
