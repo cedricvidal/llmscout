@@ -43,9 +43,9 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/Cedric Vidal/llmscout#readme"
-Issues = "https://github.com/Cedric Vidal/llmscout/issues"
-Source = "https://github.com/Cedric Vidal/llmscout"
+Documentation = "https://github.com/cedricvidal/llmscout#readme"
+Issues = "https://github.com/cedricvidal/llmscout/issues"
+Source = "https://github.com/cedricvidal/llmscout"
 
 [project.scripts]
 llmscout = "llmscout.cli:llmscout"
